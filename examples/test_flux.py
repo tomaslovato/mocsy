@@ -1,3 +1,5 @@
+import sys
+sys.path.append("../")
 import mocsy
 
 # define aliases to use flxco2 functions easily

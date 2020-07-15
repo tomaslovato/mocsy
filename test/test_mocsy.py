@@ -1,8 +1,9 @@
 from __future__ import (absolute_import, division, print_function)
 
+import sys
 import pytest
 import numpy as np
-
+sys.path.append("../")
 import mocsy
 
 

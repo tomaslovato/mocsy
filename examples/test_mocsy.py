@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+import sys
 import numpy as np
+sys.path.append("../")
 import mocsy
 
 # Define input data (typical values at depth from 0 to 5000 meters)
@@ -43,14 +45,6 @@ ph, pco2, fco2, co2, hco3, co3, OmegaA, OmegaC, BetaD, rhoSW, p, tempis = \
     mocsy.mvars (temp, sal, alk, dic, sil, phos, Patm, depth, lat,
                  optcon='mol/kg', optt='Tinsitu', optp='db', optb='l10', optk1k2=optK1K2, optkf='dg')
 
-# print mocsy results
-# -------------------
-
-print "pH     pCO2   fCO2     CO2*       HCO3-       CO32-      OmegaA OmegaC  R    Density Press  Temperature"
-for i in range (0, 6):
-    print ph[i], pco2[i], fco2[i], co2[i], hco3[i], co3[i], OmegaA[i], OmegaC[i], BetaD[i], rhoSW[i], p[i], tempis[i]
-
-
 # Compute automatic derivatives (using automatic differentiation)
 ph_deriv, pco2_deriv, fco2_deriv, co2_deriv, hco3_deriv, co3_deriv, OmegaA_deriv, OmegaC_deriv = \
     mocsy.mderivauto(temp, sal, alk, dic, sil, phos, Patm, depth, lat,                                     # INPUT
@@ -69,14 +63,26 @@ beta_Alk  = -1. / (np.log(10.) * ph_deriv[0,:])
 omega_DIC = OmegaA / OmegaA_deriv[1,:]
 omega_Alk = OmegaA / OmegaA_deriv[0,:]
 
-print ""
-print "gamma_DIC     gamma_Alk     beta_DIC     beta_Alk    omega_DIC    omega_Alk"
+# print mocsy results
+# -------------------
+
+print ('{:s}'.format('-' * 181))
+print ("  pH     pCO2    fCO2     CO2*       HCO3-       CO32-      OmegaA OmegaC  R    Density Press  Temperature gamma_DIC   gamma_Alk     beta_DIC     beta_Alk    omega_DIC    omega_Alk")
+print ("(total) (uatm)  (uatm)  (mol/kg)    (mol/kg)     (mol/kg)                       (kg/m3) (db)      (C)")
+print ('{:s}'.format('-' * 181))
+
+prntstr=' {:6.4f} {:6.1f}  {:6.1f}  {:6.4E}  {:6.4E}  {:6.4E} {:6.2f} {:6.2f} {:6.2f} {:7.2f} {:6.1f}  {:6.3f}  {:12.9f} {:12.9f} {:12.9f} {:12.9f} {:12.9f} {:12.9f}'
 for i in range (0, 6):
-    print gamma_DIC[i], gamma_Alk[i], beta_DIC[i], beta_Alk[i], omega_DIC[i], omega_Alk[i]
+    print (prntstr.format(ph[i], pco2[i], fco2[i], co2[i], hco3[i], co3[i], OmegaA[i], OmegaC[i], BetaD[i], rhoSW[i], p[i], tempis[i], gamma_DIC[i], gamma_Alk[i], beta_DIC[i], beta_Alk[i], omega_DIC[i], omega_Alk[i]))
+print ('{:s}'.format('-' * 181))
 
 # Print derivatives of pH with respect to phosphate, silicate, temperature and salinity
-print ""
-print "dpH/dPhos  dpH/dSil  dpH/dT   dpH/dS"
-print "pH/µMol     pH/µMol  pH/°C   pH/psu"
+print ("")
+print ('{:s}'.format('-' * 45))
+print ("  dpH/dPhos   dpH/dSil    dpH/dT     dpH/dS")
+print ("  pH/µMol      pH/µMol    pH/°C      pH/psu")
+print ('{:s}'.format('-' * 45))
+prntstr=' {:10.4f} {:10.5f} {:10.6f} {:10.6f}'
 for i in range (0, 6):
-    print ph_deriv[2,i], ph_deriv[3,i], ph_deriv[4,i], ph_deriv[5,i]
+    print (prntstr.format(ph_deriv[2,i], ph_deriv[3,i], ph_deriv[4,i], ph_deriv[5,i]))
+print ('{:s}'.format('-' * 45))
