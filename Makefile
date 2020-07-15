@@ -141,7 +141,7 @@ $(EXEC): $(library) $(EXEC).o
 mocsy.so: $(GSW_MOD_OBJS) $(GSW_TOOL_OBJS) src/DNAD.o $(SOURCES)
 	# cp src/*.f90 .
 	# Select the kind map
-	cp -f -s src/$(KIND_MAP) .f2py_f2cmap
+	cp -f src/$(KIND_MAP) .f2py_f2cmap
 	f2py -c -L. $(SOURCES) skip: vars_sprac : skip: vars_pertK : skip: varsolver_dnad :   \
 	    skip: constants_dnad : skip: sw_ptmp_dnad : skip: sw_temp_dnad : skip: sw_adtg_dnad :   \
 	    skip: rho_dnad : skip: equation_at_dnad : skip: solve_at_general_dnad :                 \
