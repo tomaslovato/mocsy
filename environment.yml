@@ -1,0 +1,13 @@
+---
+name: mocsy
+channels:
+  - conda-forge
+
+dependencies:
+  # Multi language support:
+  - python>=3.6
+  - ipython
+  - numpy
+  - pudb
+  - pytest
+  - pip
